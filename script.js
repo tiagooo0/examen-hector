@@ -4,23 +4,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const puntajeSpan = document.getElementById('puntaje');
     let secuencia = [];
     let puntaje = 0;
-    let jugando = false;
     let intento = 0;
 
     comenzarBtn.addEventListener('click', comenzarJuego);
 
     partes.forEach(partes => {
         partes.addEventListener('click', function() {
-            if (!jugando) return;
+            if (!secuencia.length) return;
 
             const idParte = partes.id;
+            const colorSecuencia = secuencia[intento];
 
-            if (idParte === secuencia[intento]) {
-               
-                partes.classList.add('click');
-                setTimeout(() => partes.classList.remove('click'), 500);
-
+            if (idParte === colorSecuencia) {
+                resaltarParte(partes);
                 intento++;
+
                 if (intento === secuencia.length) {
                     puntaje++;
                     puntajeSpan.textContent = puntaje;
@@ -38,48 +36,36 @@ document.addEventListener('DOMContentLoaded', function() {
         secuencia = [];
         puntaje = 0;
         puntajeSpan.textContent = puntaje;
-        jugando = true;
         intento = 0;
         mostrarSecuencia();
     }
 
     function reiniciarJuego() {
-        jugando = false;
-        comenzarBtn.disabled = false;
+        secuencia = [];
+        intento = 0;
+        puntaje = 0;
+        puntajeSpan.textContent = puntaje;
+    }
+
+    function resaltarParte(parte) {
+        parte.classList.add('click');
+        setTimeout(() => parte.classList.remove('click'), 500);
     }
 
     function mostrarSecuencia() {
-        comenzarBtn.disabled = true;
         const colores = ['part1', 'part2', 'part3', 'part4'];
-
-
         const nivelActual = secuencia.length + 1;
-        secuencia = [];
-
 
         for (let i = 0; i < nivelActual; i++) {
             const colorAleatorio = colores[Math.floor(Math.random() * 4)];
             secuencia.push(colorAleatorio);
         }
 
-        console.log('Secuencia:', secuencia);
-
-        let i = 0;
-        const intervalo = setInterval(() => {
-            const parte = document.getElementById(secuencia[i]);
-            if (parte) {
-                parte.classList.add('click');
-                setTimeout(() => {
-                    parte.classList.remove('click');
-                    i++;
-
-                    if (i >= secuencia.length) {
-                        clearInterval(intervalo);
-                        jugando = true;
-                        comenzarBtn.disabled = false;
-                    }
-                }, 500);
-            }
-        }, 1000);
+        secuencia.forEach((color, index) => {
+            setTimeout(() => {
+                const parte = document.getElementById(color);
+                resaltarParte(parte);
+            }, (index + 1) * 1000);
+        });
     }
 });
