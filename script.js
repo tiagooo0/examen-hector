@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const idParte = partes.id;
 
             if (idParte === secuencia[intento]) {
+               
                 partes.classList.add('click');
                 setTimeout(() => partes.classList.remove('click'), 500);
 
@@ -50,12 +51,17 @@ document.addEventListener('DOMContentLoaded', function() {
     function mostrarSecuencia() {
         comenzarBtn.disabled = true;
         const colores = ['part1', 'part2', 'part3', 'part4'];
+
+
         const nivelActual = secuencia.length + 1;
         secuencia = [];
+
+
         for (let i = 0; i < nivelActual; i++) {
             const colorAleatorio = colores[Math.floor(Math.random() * 4)];
             secuencia.push(colorAleatorio);
         }
+
         console.log('Secuencia:', secuencia);
 
         let i = 0;
@@ -66,6 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 setTimeout(() => {
                     parte.classList.remove('click');
                     i++;
+
                     if (i >= secuencia.length) {
                         clearInterval(intervalo);
                         jugando = true;
