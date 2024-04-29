@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     intento = 0;
                 }
             } else {
-                alert('¡Has perdido! Puntaje: ' + puntaje);
+                alert('perdiste! Puntaje: ' + puntaje);
                 reiniciarJuego();
             }
         });
